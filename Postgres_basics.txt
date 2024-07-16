@@ -1,0 +1,451 @@
+DROP DATABASE dvdrental;
+
+CREATE DATABASE dvdrental
+\l -list the databases
+download zip file & extract it
+After go c /programfiles/postgres/bin
+then type cmd in it
+then type
+pg_restore -U postgres -d dvdrental "path of the tar file" + at the end type.tar
+
+after go to PsqlShell
+then type
+psql -U postgres
+
+\c dvdrental   --to connect to the database dvdrental
+
+\dt --to list the tables
+
+ex:
+            List of relations
+ Schema |     Name      | Type  |  Owner
+--------+---------------+-------+----------
+ public | actor         | table | postgres
+ public | address       | table | postgres
+ public | category      | table | postgres
+ public | city          | table | postgres
+ public | country       | table | postgres
+ public | customer      | table | postgres
+ public | film          | table | postgres
+ public | film_actor    | table | postgres
+ public | film_category | table | postgres
+ public | inventory     | table | postgres
+ public | language      | table | postgres
+ public | payment       | table | postgres
+ public | rental        | table | postgres
+ public | staff         | table | postgres
+ public | store         | table | postgres
+
+
+
+SELECT * from customer;
+// to concat
+SELECT first_name || '' || last_name fullname,email from customer;
+//to clr screen
+\! cls
+// to find current date
+select now();
+
+select first_name,last_name,email from customer order by first_name asc;
+
+// to find the length
+select email, length(email) as Length_email from customer order by Length_email desc;
+
+create table sort_demo(num int);
+insert into sort_demo(num)
+values
+(1),(2),(3),(null);
+
+select * from sort_demo order by num nulls last;
+
+// to display column in unique
+select distinct district from address;
+
+select distinct district,city_id from address;
+
+// to see the details about the table
+\d table_name
+
+// where clause
+select * from address where district = 'Lima';
+
+Operators used with where clause
+= ->equal
+> ->Greater than
+< ->less than
+>= greater than or equal to
+<= less than or equal to
+<> or != -> not equal
+And -> logical operator And
+OR -> logical operator OR
+IN -> returns true if a value matches any value in the list
+Between ->returns true  if a value is between a range of values
+Like - > retursn true if a value is null
+
+
+
+
+
+
+
+
+
+
+
+
+select last_name,first_name from customer where first_name='Jamie' and last_name='Rice';
+last_name | first_name
+-----------+------------
+ Rice      | Jamie
+(1 row)
+
+select last_name,first_name from customer 
+where first_name in ('Ann','Anne','Annie');
+ last_name | first_name
+-----------+------------
+ Evans     | Ann
+ Powell    | Anne
+ Russell   | Annie
+ 
+ select last_name,first_name from customer
+ where first_name like 'Ann%';
+ 
+  last_name | first_name
+-----------+------------
+ Hill      | Anna
+ Evans     | Ann
+ Powell    | Anne
+ Russell   | Annie
+ Olson     | Annette
+ 
+ select last_name,first_name,length(first_name) from customer
+ where first_name like 'A%'
+ and length(first_name) between 3 and 5;
+  last_name  | first_name | length
+-------------+------------+--------
+ Lopez       | Amy        |      3
+ Hill        | Anna       |      4
+ Evans       | Ann        |      3
+ Stewart     | Alice      |      5
+ Powell      | Anne       |      4
+ Russell     | Annie      |      5
+ Morales     | Anita      |      5
+ Dixon       | Amber      |      5
+ Burns       | April      |      5
+ Bradley     | Ana        |      3
+ Austin      | Alma       |      4
+ Bishop      | Agnes      |      5
+ Gooch       | Adam       |      4
+ 
+ 
+ select first_name,last_name from customer where first_name like 'Bra%' and last_name <> 'Motley';
+  first_name | last_name
+------------+-----------
+ Brandy     | Graves
+ Brandon    | Huey
+ Brad       | Mccurdy
+ 
+ 
+ select district,address from address where district = 'Alberta';
+  district |      address
+----------+-------------------
+ Alberta  | 47 MySakila Drive
+ Alberta  | 23 Workhaven Lane
+ 
+ select district,address from address where district in ('Alberta','Nagasaki','California') order by district;
+   district  |        address
+------------+------------------------
+ Alberta    | 23 Workhaven Lane
+ Alberta    | 47 MySakila Drive
+ California | 770 Bydgoszcz Avenue
+ California | 1135 Izumisano Parkway
+ California | 793 Cam Ranh Avenue
+ California | 533 al-Ayn Boulevard
+ California | 226 Brest Manor
+ California | 920 Kumbakonam Loop
+ California | 1866 al-Qatif Avenue
+ California | 1895 Zhezqazghan Drive
+ California | 1121 Loja Avenue
+ Nagasaki   | 1913 Hanoi Way
+(12 rows)
+
+select district,address from address where address like '%Drive' order by district limit 15;
+  district    |         address
+----------------+-------------------------
+ Aceh           | 1078 Stara Zagora Drive
+ Ahal           | 387 Mwene-Ditu Drive
+ al-Daqahliya   | 775 ostka Drive
+ al-Qalyubiya   | 765 Southampton Drive
+ Alberta        | 47 MySakila Drive
+ Andhra Pradesh | 230 Urawa Drive
+ Balikesir      | 1912 Emeishan Drive
+ Batna          | 1924 Shimonoseki Drive
+ Boyac          | 656 Matamoros Drive
+ Bretagne       | 1346 Mysore Drive
+ Buenos Aires   | 1623 Kingstown Drive
+ California     | 1895 Zhezqazghan Drive
+ Callao         | 827 Yuncheng Drive
+ Daugavpils     | 1673 Tangail Drive
+ England        | 1497 Yuzhou Drive
+ 
+ select district,address from address where address like '%Drive' and district <> 'Maharashtra' order by district;
+  Aceh               | 1078 Stara Zagora Drive
+ Ahal               | 387 Mwene-Ditu Drive
+ al-Daqahliya       | 775 ostka Drive
+ al-Qalyubiya       | 765 Southampton Drive
+ Alberta            | 47 MySakila Drive
+ Andhra Pradesh     | 230 Urawa Drive
+ Balikesir          | 1912 Emeishan Drive
+ Batna              | 1924 Shimonoseki Drive
+ Boyac              | 656 Matamoros Drive
+ Bretagne           | 1346 Mysore Drive
+ Buenos Aires       | 1623 Kingstown Drive
+ California         | 1895 Zhezqazghan Drive
+ Callao             | 827 Yuncheng Drive
+ Daugavpils         | 1673 Tangail Drive
+ England            | 1497 Yuzhou Drive
+ Esfahan            | 1531 Sal Drive
+ Guangdong          | 1952 Chatsworth Drive
+ Guerrero           | 760 Miyakonojo Drive
+ Ha Darom           | 659 Vaduz Drive
+ Hubei              | 804 Elista Drive
+ Ibaragi            | 102 Chapra Drive
+ Jiangxi            | 1294 Firozabad Drive
+ Kermanshah         | 220 Hidalgo Drive
+ KwaZulu-Natal      | 1497 Fengshan Drive
+ Lipetsk            | 1998 Halifax Drive
+ Masqat             | 613 Korolev Drive
+ Mekka              | 1124 Buenaventura Drive
+ Michoacn de Ocampo | 781 Shimonoseki Drive
+ Michoacn de Ocampo | 251 Florencia Drive
+ Midi-Pyrnes        | 391 Callao Drive
+ Nagano             | 496 Celaya Drive
+ North West         | 1639 Saarbrcken Drive
+ Northern           | 692 Amroha Drive
+ Okayama            | 1404 Taguig Drive
+ Okayama            | 591 Sungai Petani Drive
+ Osaka              | 767 Pyongyang Drive
+ Oyo & Osun         | 1888 Kabul Drive
+ Puerto Plata       | 437 Chungho Drive
+ QLD                | 1411 Lillydale Drive
+ Santa F            | 430 Kumbakonam Drive
+ Shandong           | 85 San Felipe de Puerto Plata Drive
+ 
+ select title , length,rental_rate from film
+ where length > 180
+ and
+ rental_rate < 1;
+   title        | length | rental_rate
+--------------------+--------+-------------
+ Catch Amistad      |    183 |        0.99
+ Haunting Pianist   |    181 |        0.99
+ Intrigue Worst     |    181 |        0.99
+ Love Suicides      |    181 |        0.99
+ Runaway Tenenbaums |    181 |        0.99
+ Smoochy Control    |    184 |        0.99
+ Sorority Queen     |    184 |        0.99
+ Theory Mermaid     |    184 |        0.99
+ Wild Apollo        |    181 |        0.99
+ Young Language     |    183 |        0.99
+(10 rows)
+
+ select title , length,rental_rate from film
+ where rental_rate > 3
+ or
+ rental_rate = 0.99;
+ 
+ 
+ select film_id,title,release_year
+ from film
+ order by film_id limit 5 offset 3;
+
+ film_id |      title       | release_year
+---------+------------------+--------------
+       4 | Affair Prejudice |         2006
+       5 | African Egg      |         2006
+       6 | Agent Truman     |         2006
+       7 | Airplane Sierra  |         2006
+       8 | Airport Pollock  |         2006
+(5 rows)
+
+select film_id,title,release_year,rating from film 
+order by rating desc limit 5;
+
+// or we can use fetch instead of limit in postgres
+
+select film_id,title,release_year,rating from film 
+order by rating desc fetch first 5 row only;
+
+
+
+film_id |      title       | release_year | rating
+---------+------------------+--------------+--------
+      10 | Aladdin Calendar |         2006 | NC-17
+      14 | Alice Fantasia   |         2006 | NC-17
+     133 | Chamber Italian  |         2006 | NC-17
+       3 | Adaptation Holes |         2006 | NC-17
+      15 | Alien Center     |         2006 | NC-17
+(5 rows)
+
+select payment_id,amount,payment_date
+from payment
+where 
+payment_date::date in ('2007-02-15','2007-02-16');
+
+
+// instead of like we can us this
+select first_name, last_name from customer where first_name ~~* 'dar%';
+dvdrental=# select first_name, last_name from customer where first_name ~~* 'dar%';
+ first_name | last_name
+------------+-----------
+ Darlene    | Rose
+ Darrell    | Power
+ Darryl     | Ashcraft
+ Darren     | Windham
+ Daryl      | Larue
+ 
+ create table m(message text);
+ insert into m(message) values ('the rents are now 10%higher than last month'),('the new films will have in the title');
+ 
+ select * from t where message like '%10$%%' escape '$';
+ 
+ 
+ // group by
+ 
+ select customer_id,sum(amount) from payment group by customer_id order by sum(amount) desc;
+ 
+ select staff_id, count(payment_id) from payment group by staff_id;
+  staff_id | count
+----------+-------
+        1 |  7292
+        2 |  7304
+(2 rows)
+select customer_id,sum(amount) from payment group by customer_id having sum(amount) > 200 order by sum(amount) desc;
+customer_id |  sum
+-------------+--------
+         148 | 211.55
+         526 | 208.58
+		 
+select rating,special_features,count(release_year)
+from film
+group by cube(rating,special_features);
+ rating |                       special_features                       | count
+--------+--------------------------------------------------------------+-------
+        |                                                              |  1000
+ PG-13  | {Commentaries,"Behind the Scenes"}                           |    17
+ G      | {Trailers,Commentaries,"Behind the Scenes"}                  |    14
+ NC-17  | {Trailers,"Deleted Scenes"}                                  |    16
+ NC-17  | {Trailers,"Deleted Scenes","Behind the Scenes"}              |     7
+ R      | {"Deleted Scenes","Behind the Scenes"}                       |    17
+ NC-17  | {Trailers,Commentaries}                                      |    12
+ NC-17  | {"Deleted Scenes","Behind the Scenes"}                       |    16
+ R      | {Trailers}                                                   |    15
+ R      | {"Deleted Scenes"}                                           |    12
+ G      | {Trailers}                                                   |    16
+ PG-13  | {Trailers,Commentaries,"Deleted Scenes","Behind the Scenes"} |    13
+ G      | {Commentaries,"Behind the Scenes"}                           |    15
+ PG-13  | {Trailers,Commentaries,"Behind the Scenes"}                  |    17
+ NC-17  | {Commentaries,"Behind the Scenes"}                           |    17
+ PG     | {Commentaries,"Behind the Scenes"}                           |    14
+ PG-13  | {Commentaries}                                               |    11
+ G      | {Trailers,Commentaries,"Deleted Scenes"}                     |    13
+ PG-13  | {Commentaries,"Deleted Scenes","Behind the Scenes"}          |    15
+ NC-17  | {Trailers,Commentaries,"Behind the Scenes"}                  |    24
+ NC-17  | {Trailers,"Behind the Scenes"}                               |    14
+ PG     | {Trailers}                                                   |    10
+ PG-13  | {Trailers,Commentaries,"Deleted Scenes"}                     |    14
+ PG-13  | {Trailers,"Deleted Scenes"}                                  |    14
+ R      | {"Behind the Scenes"}                                        |    16
+ PG     | {"Behind the Scenes"}                                        |    15
+ PG     | {"Deleted Scenes"}
+ 
+ 
+ select rating,special_features,count(release_year)
+from film
+group by rollup(rating,special_features);
+order by rating desc;
+ rating |                       special_features                       | count
+--------+--------------------------------------------------------------+-------
+        |                                                              |  1000
+ PG-13  | {Commentaries,"Behind the Scenes"}                           |    17
+ G      | {Trailers,Commentaries,"Behind the Scenes"}                  |    14
+ NC-17  | {Trailers,"Deleted Scenes"}                                  |    16
+ NC-17  | {Trailers,"Deleted Scenes","Behind the Scenes"}              |     7
+ R      | {"Deleted Scenes","Behind the Scenes"}                       |    17
+ NC-17  | {Trailers,Commentaries}                                      |    12
+ NC-17  | {"Deleted Scenes","Behind the Scenes"}                       |    16
+ R      | {Trailers}                                                   |    15
+ R      | {"Deleted Scenes"}                                           |    12
+ G      | {Trailers}                                                   |    16
+ PG-13  | {Trailers,Commentaries,"Deleted Scenes","Behind the Scenes"} |    13
+ G      | {Commentaries,"Behind the Scenes"}                           |    15
+ PG-13  | {Trailers,Commentaries,"Behind the Scenes"}                  |    17
+ NC-17  | {Commentaries,"Behind the Scenes"}                           |    17
+ PG     | {Commentaries,"Behind the Scenes"}                           |    14
+ PG-13  | {Commentaries}                                               |    11
+ G      | {Trailers,Commentaries,"Deleted Scenes"}                     |    13
+ PG-13  | {Commentaries,"Deleted Scenes","Behind the Scenes"}          |    15
+ NC-17  | {Trailers,Commentaries,"Behind the Scenes"}                  |    24
+ NC-17  | {Trailers,"Behind the Scenes"}                               |    14
+ PG     | {Trailers}                                                   |    10
+ PG-13  | {Trailers,Commentaries,"Deleted Scenes"}                     |    14
+ PG-13  | {Trailers,"Deleted Scenes"}                                  |    14
+ R      | {"Behind the Scenes"}                                        |    16
+ PG     | {"Behind the Scenes"}                                        |    15
+ PG     | {"Deleted Scenes"}                                           |     8
+ PG     | {"Deleted Scenes","Behind the Scenes"}                       |    12
+ G      | {"Behind the Scenes"}                                        |    11
+ R      | {Commentaries}                                               |    14
+ PG-13  | {"Deleted Scenes","Behind the Scenes"}                       |    14
+ R      | {Trailers,Commentaries,"Deleted Scenes"}                     |    11
+ PG     | {Commentaries,"Deleted Scenes"}                              |    14
+ R      | {Trailers,Commentaries,"Behind the Scenes"}                  |    11
+ PG-13  | {Commentaries,"Deleted Scenes"}                              |    11
+ PG     | {Trailers,"Deleted Scenes"}                                  |    15
+ NC-17  | {Commentaries,"Deleted Scenes"}                              |    16
+ PG     | {Commentaries}                                               |    12
+ G      | {Commentaries}                                               |    13
+ R      | {Trailers,"Behind the Scenes"}                               |    21
+ G      | {Trailers,"Deleted Scenes","Behind the Scenes"}              |     8
+ NC-17  | {"Deleted Scenes"}                                           |    12
+ G      | {"Deleted Scenes","Behind the Scenes"}                       |    12
+ PG-13  | {"Behind the Scenes"}                                        |    18
+ R      | {Trailers,Commentaries,"Deleted Scenes","Behind the Scenes"} |    11
+ G      | {Trailers,"Behind the Scenes"}                               |     9
+ PG-13  | {Trailers,Commentaries}                                      |    19
+ PG     | {Trailers,Commentaries,"Deleted Scenes"}                     |    15
+ R      | {Commentaries,"Deleted Scenes","Behind the Scenes"}          |    12
+ PG-13  | {Trailers,"Deleted Scenes","Behind the Scenes"}              |     8
+ PG-13  | {Trailers,"Behind the Scenes"}                               |    18
+ R      | {Commentaries,"Deleted Scenes"}                              |    12
+ PG     | {Trailers,Commentaries}                                      |    15
+ NC-17  | {Trailers,Commentaries,"Deleted Scenes","Behind the Scenes"} |    12
+ R      | {Trailers,Commentaries}                                      |    16
+ PG-13  | {"Deleted Scenes"}                                           |    15
+ G      | {Commentaries,"Deleted Scenes","Behind the Scenes"}          |     7
+ NC-17  | {Trailers}                                                   |    12
+ PG     | {Trailers,Commentaries,"Deleted Scenes","Behind the Scenes"} |    11
+ R      | {Trailers,"Deleted Scenes"}                                  |    11
+ G      | {"Deleted Scenes"}                                           |    14
+ NC-17  | {Commentaries}                                               |    12
+ NC-17  | {Commentaries,"Deleted Scenes","Behind the Scenes"}          |    19
+ G      | {Trailers,Commentaries,"Deleted Scenes","Behind the Scenes"} |    14
+ R      | {Commentaries,"Behind the Scenes"}                           |     7
+ G      | {Trailers,Commentaries}                                      |    10
+ PG     | {Trailers,"Behind the Scenes"}                               |    10
+ PG     | {Commentaries,"Deleted Scenes","Behind the Scenes"}          |    13
+ NC-17  | {"Behind the Scenes"}                                        |    10
+ NC-17  | {Trailers,Commentaries,"Deleted Scenes"}                     |    11
+ G      | {Trailers,"Deleted Scenes"}                                  |    10
+ PG     | {Trailers,"Deleted Scenes","Behind the Scenes"}              |    17
+ R      | {Trailers,"Deleted Scenes","Behind the Scenes"}              |     9
+ PG     | {Trailers,Commentaries,"Behind the Scenes"}                  |    13
+ G      | {Commentaries,"Deleted Scenes"}                              |    12
+ PG-13  | {Trailers}                                                   |    19
+ R      |                                                              |   195
+ PG     |                                                              |   194
+ NC-17  |                                                              |   210
+ PG-13  |                                                              |   223
+ G      |                                                              |   178
+(81 rows)
+
